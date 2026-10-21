@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LudoMates</title>
+<style>
+body{margin:0;background:#101827;color:white;font-family:Arial;text-align:center;padding:15px}
+h1{color:#ffd54a}
+.board{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;max-width:350px;margin:20px auto}
+.home{aspect-ratio:1;border:3px solid white;border-radius:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px}
+.red{background:#e53935}.green{background:#27ae60}.yellow{background:#f1c40f}.blue{background:#2980b9}
+.coin{background:white;color:black;border-radius:50%;display:grid;place-items:center;font-size:22px;font-weight:bold}
+.center{display:grid;place-items:center;background:#334155;border-radius:12px;font-size:30px}
+button{padding:14px 25px;border:0;border-radius:10px;background:#ffd54a;font-size:18px;font-weight:bold}
+#status{font-size:18px;margin:15px}
+</style>
+</head>
+<body>
+<h1>🎲 LudoMates</h1>
+<p>Four Player Ludo Game</p>
+<div class="board">
+<div class="home red"><div class="coin">1</div><div class="coin">2</div><div class="coin">3</div><div class="coin">4</div></div>
+<div class="center">🎲</div>
+<div class="home green"><div class="coin">1</div><div class="coin">2</div><div class="coin">3</div><div class="coin">4</div></div>
+<div class="home yellow"><div class="coin">1</div><div class="coin">2</div><div class="coin">3</div><div class="coin">4</div></div>
+<div class="center">LUDO</div>
+<div class="home blue"><div class="coin">1</div><div class="coin">2</div><div class="coin">3</div><div class="coin">4</div></div>
+</div>
+<h2 id="player">Red Player</h2>
+<div id="die">🎲</div>
+<button onclick="rollDice()">ROLL DICE</button>
+<div id="status">Red Player's turn!</div>
+<script>
+const players=["Red","Green","Yellow","Blue"];
+const diceFaces=["⚀","⚁","⚂","⚃","⚄","⚅"];
+let turn=0;
+function rollDice(){
+ const n=Math.floor(Math.random()*6)+1;
+ document.getElementById("die").textContent=diceFaces[n-1];
+ document.getElementById("status").textContent=players[turn]+" rolled "+n+"!";
+ turn=(turn+1)%4;
+ document.getElementById("player").textContent=players[turn]+" Player";
+}
+</script>
+</body>
+</html>
