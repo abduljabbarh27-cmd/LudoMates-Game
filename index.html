@@ -4,45 +4,171 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LudoMates</title>
+<title>LudoMates Game</title>
 <style>
-body{margin:0;background:#101827;color:white;font-family:Arial;text-align:center;padding:15px}
-h1{color:#ffd54a}
-.board{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;max-width:350px;margin:20px auto}
-.home{aspect-ratio:1;border:3px solid white;border-radius:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px}
-.red{background:#e53935}.green{background:#27ae60}.yellow{background:#f1c40f}.blue{background:#2980b9}
-.coin{background:white;color:black;border-radius:50%;display:grid;place-items:center;font-size:22px;font-weight:bold}
-.center{display:grid;place-items:center;background:#334155;border-radius:12px;font-size:30px}
-button{padding:14px 25px;border:0;border-radius:10px;background:#ffd54a;font-size:18px;font-weight:bold}
-#status{font-size:18px;margin:15px}
+*{box-sizing:border-box}
+body{margin:0;background:#101827;color:white;font-family:Arial;text-align:center}
+header{background:#702ee8;padding:16px}
+h1{margin:0}
+.panel{padding:12px}
+button,select,input{padding:11px;margin:4px;border:0;border-radius:9px;font-size:14px}
+button{background:#facc15;color:#111;font-weight:bold}
+.board{width:min(94vw,420px);aspect-ratio:1;margin:12px auto;display:grid;grid-template-columns:repeat(15,1fr);grid-template-rows:repeat(15,1fr);border:4px solid white;background:#fff}
+.cell{display:flex;align-items:center;justify-content:center;font-size:clamp(8px,3vw,18px);color:#111}
+.red{background:#ef4444}.green{background:#22c55e}.yellow{background:#facc15}.blue{background:#3b82f6}.path{background:#e5e7eb}.home{background:#fff}
+.room{background:#1e293b;margin:12px;padding:18px;border-radius:16px}
+#message,#roomStatus{color:#fde68a;min-height:25px}
 </style>
 </head>
 <body>
+<header>
 <h1>🎲 LudoMates</h1>
-<p>Four Player Ludo Game</p>
-<div class="board">
-<div class="home red"><div class="coin">1</div><div class="coin">2</div><div class="coin">3</div><div class="coin">4</div></div>
-<div class="center">🎲</div>
-<div class="home green"><div class="coin">1</div><div class="coin">2</div><div class="coin">3</div><div class="coin">4</div></div>
-<div class="home yellow"><div class="coin">1</div><div class="coin">2</div><div class="coin">3</div><div class="coin">4</div></div>
-<div class="center">LUDO</div>
-<div class="home blue"><div class="coin">1</div><div class="coin">2</div><div class="coin">3</div><div class="coin">4</div></div>
+<p id="subtitle">Play Together, Win Together!</p>
+</header>
+
+<div class="panel">
+<select id="language" onchange="changeLanguage()">
+<option value="en">English</option>
+<option value="kn">ಕನ್ನಡ</option>
+<option value="hi">हिन्दी</option>
+<option value="ml">മലയാളം</option>
+<option value="ta">தமிழ்</option>
+<option value="te">తెలుగు</option>
+<option value="mr">मराठी</option>
+<option value="ur">اردو</option>
+</select>
+<select id="playerCount" onchange="newGame()">
+<option value="2">2 Players</option>
+<option value="4" selected>4 Players</option>
+</select>
 </div>
-<h2 id="player">Red Player</h2>
-<div id="die">🎲</div>
-<button onclick="rollDice()">ROLL DICE</button>
-<div id="status">Red Player's turn!</div>
+
+<div class="panel">
+🪙 Coins: <b id="coins">1000</b>
+<button onclick="newGame()" id="newBtn">New Game</button>
+</div>
+
+<div class="board" id="board"></div>
+
+<div class="panel">
+<button onclick="rollDice()" id="diceBtn">🎲 Roll Dice</button>
+<button onclick="moveToken()" id="moveBtn">Move Token</button>
+<p id="message">Roll the dice to start!</p>
+</div>
+
+<div class="room">
+<h2>🎙️ Voice Chat Room</h2>
+<p>Join your friends in a room</p>
+<input id="roomId" placeholder="Enter Room ID">
+<button onclick="joinRoom()">Join Room</button>
+<p id="roomStatus">Not connected</p>
+<button onclick="toggleMic()" id="micBtn">🎤 Mic ON/OFF</button>
+<button onclick="leaveRoom()" style="background:#ef4444;color:white">Leave Room</button>
+<p id="micStatus">Microphone not started</p>
+<p>👥 Room capacity: 10 players</p>
+<p id="roomNote">Voice connection requires online WebRTC setup.</p>
+</div>
+
 <script>
-const players=["Red","Green","Yellow","Blue"];
-const diceFaces=["⚀","⚁","⚂","⚃","⚄","⚅"];
-let turn=0;
-function rollDice(){
- const n=Math.floor(Math.random()*6)+1;
- document.getElementById("die").textContent=diceFaces[n-1];
- document.getElementById("status").textContent=players[turn]+" rolled "+n+"!";
- turn=(turn+1)%4;
- document.getElementById("player").textContent=players[turn]+" Player";
+const words={
+en:["Play Together, Win Together!","New Game","Roll Dice","Move Token","Roll the dice to start!","Your turn","Dice: ","Token moved!"],
+kn:["ಒಟ್ಟಿಗೆ ಆಡಿ, ಒಟ್ಟಿಗೆ ಗೆಲ್ಲಿ!","ಹೊಸ ಆಟ","ಡೈಸ್ ಹಾಕಿ","ಕಾಯಿನ್ ಚಲಿಸಿ","ಆರಂಭಿಸಲು ಡೈಸ್ ಹಾಕಿ!","ನಿಮ್ಮ ಸರದಿ","ಡೈಸ್ ಸಂಖ್ಯೆ: ","ಕಾಯಿನ್ ಚಲಿಸಿದೆ!"],
+hi:["साथ खेलें, साथ जीतें!","नया खेल","पासा फेंकें","गोटी चलाएँ","शुरू करने के लिए पासा फेंकें!","आपकी बारी","पासा: ","गोटी चली!"],
+ml:["ഒരുമിച്ച് കളിക്കൂ, ജയിക്കൂ!","പുതിയ കളി","പകിട എറിയുക","കരു നീക്കുക","കളി തുടങ്ങാൻ പകിട എറിയുക!","നിങ്ങളുടെ ഊഴം","പകിട: ","കരു നീങ്ങി!"],
+ta:["ஒன்றாக விளையாடி வெல்லுங்கள்!","புதிய விளையாட்டு","பகடை உருட்டு","காயை நகர்த்து","தொடங்க பகடை உருட்டுங்கள்!","உங்கள் முறை","பகடை: ","காய் நகர்ந்தது!"],
+te:["కలిసి ఆడి గెలవండి!","కొత్త ఆట","పాచిక వేయండి","పావును కదపండి","ఆట మొదలుపెట్టండి!","మీ వంతు","పాచిక: ","పావు కదిలింది!"],
+mr:["एकत्र खेळा, जिंका!","नवीन खेळ","फासा टाका","सोंगटी हलवा","खेळ सुरू करा!","तुमची पाळी","फासा: ","सोंगटी हलली!"],
+ur:["مل کر کھیلیں، جیتیں!","نیا کھیل","پانسہ پھینکیں","مہرہ چلائیں","کھیل شروع کریں!","آپ کی باری","پانسہ: ","مہرہ چلا!"]
+};
+const colors=["red","green","yellow","blue"];
+const symbols=["🔴","🟢","🟡","🔵"];
+const names=["Red","Green","Yellow","Blue"];
+let turn=0,roll=0,coins=1000,count=4,positions=[0,0,0,0];
+let stream=null;
+
+function changeLanguage(){
+ const t=words[language.value]||words.en;
+ subtitle.textContent=t[0];
+ newBtn.textContent=t[1];
+ diceBtn.textContent="🎲 "+t[2];
+ moveBtn.textContent=t[3];
+ message.textContent=t[4];
 }
+
+function makeBoard(){
+ board.innerHTML="";
+ for(let r=0;r<15;r++)for(let c=0;c<15;c++){
+  let e=document.createElement("div");e.className="cell";
+  if(r<6&&c<6)e.classList.add("red");
+  else if(r<6&&c>8)e.classList.add("green");
+  else if(r>8&&c<6)e.classList.add("blue");
+  else if(r>8&&c>8)e.classList.add("yellow");
+  else if(r>=6&&r<=8&&c>=6&&c<=8)e.classList.add("home");
+  else if(r===7||c===7)e.classList.add("path");
+  board.appendChild(e);
+ }
+}
+
+function drawTokens(){
+ makeBoard();
+ const spots=[
+ [1,1],[1,4],[4,1],[4,4],
+ [1,10],[1,13],[4,10],[4,13],
+ [10,10],[10,13],[13,10],[13,13],
+ [10,1],[10,4],[13,1],[13,4]
+ ];
+ for(let p=0;p<count;p++){
+  let s=spots[p*4+(positions[p]%4)];
+  let idx=s[0]*15+s[1];
+  board.children[idx].textContent=symbols[p];
+ }
+}
+function rollDice(){
+ if(roll){message.textContent="Move your token first!";return}
+ roll=Math.floor(Math.random()*6)+1;
+ diceBtn.textContent="🎲 "+roll;
+ message.textContent=names[turn]+" — "+(words[language.value]||words.en)[5]+" — "+(words[language.value]||words.en)[6]+roll;
+}
+function moveToken(){
+ if(!roll){message.textContent=(words[language.value]||words.en)[4];return}
+ if(roll===6||positions[turn]>0){positions[turn]+=roll;coins+=10}
+ document.getElementById("coins").textContent=coins;
+ message.textContent=(words[language.value]||words.en)[7];
+ roll=0;turn=(turn+1)%count;changeLanguage();drawTokens();
+}
+function newGame(){
+ count=Number(playerCount.value);turn=0;roll=0;coins=1000;positions=[0,0,0,0];
+ document.getElementById("coins").textContent=coins;
+ changeLanguage();drawTokens();
+}
+
+// Microphone access only; this does not yet connect remote players.
+async function joinRoom(){
+ const id=document.getElementById("roomId").value.trim();
+ if(!id){roomStatus.textContent="Enter a Room ID first";return}
+ if(!navigator.mediaDevices?.getUserMedia){
+  roomStatus.textContent="Open this site over HTTPS to use the microphone";return;
+ }
+ try{
+  stream=await navigator.mediaDevices.getUserMedia({audio:true});
+  roomStatus.textContent="Room "+id+" selected. Microphone ready.";
+  micStatus.textContent="🎤 Microphone ON";
+ }catch(e){
+  roomStatus.textContent="Microphone permission denied. Allow microphone access.";
+ }
+}
+function toggleMic(){
+ if(!stream){micStatus.textContent="Join a room first";return}
+ const track=stream.getAudioTracks()[0];
+ track.enabled=!track.enabled;
+ micStatus.textContent=track.enabled?"🎤 Microphone ON":"🔇 Microphone OFF";
+}
+function leaveRoom(){
+ if(stream)stream.getTracks().forEach(t=>t.stop());
+ stream=null;roomStatus.textContent="Left the room";
+ micStatus.textContent="Microphone not started";
+}
+drawTokens();changeLanguage();
 </script>
 </body>
 </html>
