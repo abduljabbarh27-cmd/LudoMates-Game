@@ -5,73 +5,103 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>LudoMates</title>
 <style>
-:root{--bg:#101522;--panel:#1b2435;--text:#f5f7fb;--muted:#aeb9cb;--gold:#ffd166;--red:#ef4444;--green:#22c55e;--yellow:#facc15;--blue:#3b82f6}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(160deg,#101522,#202c43);color:var(--text);font-family:system-ui,-apple-system,sans-serif}
-header{padding:16px;text-align:center;background:#0b1020;border-bottom:1px solid #344158}h1{margin:0;font-size:28px}header p{margin:5px 0 0;color:var(--muted);font-size:13px}
-main{max-width:850px;margin:auto;padding:14px;display:grid;gap:14px}.panel{background:var(--panel);border:1px solid #344158;border-radius:16px;padding:14px;box-shadow:0 8px 25px #0003}
-.top{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:#111827;padding:12px;border-radius:12px}.stat small{display:block;color:var(--muted)}.stat strong{font-size:22px;color:var(--gold)}
-.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}button,select,input{border:0;border-radius:10px;padding:11px 13px;font:inherit}button{background:#334155;color:white;font-weight:700;cursor:pointer}button.primary{background:var(--gold);color:#211a08}button:disabled{opacity:.45}select,input{background:#0f172a;color:white;border:1px solid #475569;min-width:0}
-.board-wrap{display:flex;justify-content:center}.board{width:min(100%,520px);aspect-ratio:1;background:#fff;border:5px solid #e5e7eb;border-radius:8px;display:grid;grid-template-columns:repeat(15,1fr);grid-template-rows:repeat(15,1fr);overflow:hidden}
-.cell{border:1px solid #d1d5db;display:flex;align-items:center;justify-content:center;font-size:clamp(7px,2.2vw,14px);position:relative;color:#111827}.home-red{background:#fecaca}.home-green{background:#bbf7d0}.home-yellow{background:#fef08a}.home-blue{background:#bfdbfe}.path{background:#fff}.safe{background:#e5e7eb}.center{background:conic-gradient(var(--green) 0 25%,var(--yellow) 0 50%,var(--blue) 0 75%,var(--red) 0);color:white;font-size:clamp(8px,2vw,14px);font-weight:900}
-.token{width:78%;height:78%;border-radius:50%;border:2px solid white;box-shadow:0 1px 4px #0008;display:flex;align-items:center;justify-content:center;color:white;font-weight:900;font-size:clamp(8px,2.2vw,14px);z-index:2}.t-red{background:var(--red)}.t-green{background:var(--green)}.t-yellow{background:#ca8a04}.t-blue{background:var(--blue)}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.note{color:var(--muted);font-size:13px;line-height:1.5}.status{padding:10px;border-radius:10px;background:#111827;margin-top:10px;min-height:42px}.playerlist{display:grid;grid-template-columns:1fr 1fr;gap:8px}.player{padding:9px;border-radius:10px;background:#111827}.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px}
-@media(max-width:520px){main{padding:9px}.panel{padding:10px}.top{grid-template-columns:1fr 1fr}.controls button{flex:1}.row2{grid-template-columns:1fr}}
+:root{--bg:#101522;--panel:#1b2435;--text:#f5f7fb;--muted:#aeb9cb;--gold:#ffd166}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(160deg,#101522,#202c43);color:var(--text);font-family:system-ui,sans-serif}
+header{text-align:center;padding:18px;background:#0b1020}
+h1{margin:0}
+main{max-width:850px;margin:auto;padding:12px;display:grid;gap:12px}
+.panel{background:var(--panel);border:1px solid #344158;border-radius:16px;padding:14px}
+.controls{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+button,input,select{padding:11px;border:0;border-radius:9px;font:inherit}
+button{background:#334155;color:white;cursor:pointer}
+.primary{background:var(--gold);color:#211a08;font-weight:bold}
+input,select{background:#0f172a;color:white;border:1px solid #475569;min-width:0}
+input{flex:1}
+.status{background:#111827;padding:10px;border-radius:9px;overflow-wrap:anywhere;margin-top:8px}
+.stats{display:flex;gap:10px;flex-wrap:wrap}
+.stat{background:#111827;padding:12px;border-radius:10px;flex:1}
+small{color:var(--muted)}
+.chatlog{height:180px;overflow:auto;background:#0f172a;padding:8px;border-radius:9px}
+.chatmsg{background:#1e293b;padding:8px;margin:5px 0;border-radius:8px;overflow-wrap:anywhere}
+.board{width:min(100%,450px);aspect-ratio:1;margin:auto;background:#fff;color:#111;display:grid;grid-template-columns:repeat(15,1fr);grid-template-rows:repeat(15,1fr);border:4px solid white}
+.cell{border:1px solid #ddd;display:flex;align-items:center;justify-content:center;font-size:10px}
+.home-red{background:#fecaca}.home-green{background:#bbf7d0}.home-yellow{background:#fef08a}.home-blue{background:#bfdbfe}
+.center{background:conic-gradient(#22c55e 0 25%,#facc15 0 50%,#3b82f6 0 75%,#ef4444 0)}
+.token{border-radius:50%;width:90%;height:90%;color:white;text-align:center;font-weight:bold}
+.t-red{background:#ef4444}.t-green{background:#22c55e}.t-yellow{background:#ca8a04}.t-blue{background:#3b82f6}
+.member{background:#111827;padding:8px;margin-top:5px;border-radius:8px;overflow-wrap:anywhere}
+audio{width:100%;margin-top:8px}
+@media(max-width:500px){main{padding:7px}.panel{padding:10px}}
 </style>
 </head>
 <body>
-<header><h1>🎲 LudoMates</h1><p id="subtitle">ಸ್ನೇಹಿತರ ಜೊತೆ ಆಟ · Coin · ಉಡುಗೊರೆ</p></header>
+<header>
+<h1>🎲 LudoMates</h1>
+<p>Rooms · Chat · Shared Music · Admin Tools</p>
+</header>
 <main>
 <section class="panel">
- <div class="top">
-  <div class="stat"><small id="coinLabel">ನನ್ನ Coin</small><strong id="coins">500</strong></div>
-  <div class="stat"><small id="diamondLabel">Diamonds</small><strong id="diamonds">10 💎</strong></div>
- </div>
- <div class="controls" style="margin-top:12px">
-  <select id="language" aria-label="ಭಾಷೆ">
-   <option value="kn">ಕನ್ನಡ</option><option value="en">English</option><option value="hi">हिन्दी</option><option value="ml">മലയാളം</option><option value="ta">தமிழ்</option>
-  </select>
-  <select id="players"><option value="2">2 ಆಟಗಾರರು</option><option value="4">4 ಆಟಗಾರರು</option></select>
-  <button id="daily">🎁 ದಿನದ ಉಚಿತ Coin</button>
- </div>
- <p class="note" id="dailyNote">ದಿನಕ್ಕೆ ಒಮ್ಮೆ 100 ಉಚಿತ Coin ಪಡೆಯಬಹುದು.</p>
+<div class="stats">
+<div class="stat"><small>Coins (demo)</small><h2 id="coins">500</h2></div>
+<div class="stat"><small>Diamonds (demo)</small><h2>10 💎</h2></div>
+<div class="stat"><small>Connection</small><b id="connection">Offline</b></div>
+</div>
+<div class="controls">
+<input id="nickname" placeholder="ನಿಮ್ಮ ಹೆಸರು" maxlength="24">
+<select id="seatCount"><option value="2">2 ಆಟಗಾರರು</option><option value="4">4 ಆಟಗಾರರು</option></select>
+<input id="roomCode" placeholder="Room code" maxlength="20">
+<button class="primary" id="createRoom">Create Room</button>
+<button id="joinRoom">Join Room</button>
+<button id="leaveRoom">Leave</button>
+</div>
+<div class="status" id="roomStatus">Firebase ಸಂಪರ್ಕಿಸಲು Room ರಚಿಸಿ ಅಥವಾ Join ಮಾಡಿ.</div>
 </section>
 
 <section class="panel">
- <div class="board-wrap"><div id="board" class="board" aria-label="Ludo ಬೋರ್ಡ್"></div></div>
- <div class="controls" style="margin-top:12px">
-  <button class="primary" id="dice">🎲 Dice ಎಸೆಯಿರಿ</button>
-  <button id="move">Token ಚಲಿಸು</button>
-  <button id="reset">ಹೊಸ ಆಟ</button>
- </div>
- <div class="status" id="status">ಆಟ ಆರಂಭಿಸಲು Dice ಎಸೆಯಿರಿ. 6 ಬಂದಾಗ Token ಹೊರಬರುತ್ತದೆ.</div>
- <div class="playerlist" id="playerlist" style="margin-top:10px"></div>
- <p class="note">ಇದು ಪ್ರಾರಂಭಿಕ ಆಟದ ಮಾದರಿ. ಈಗಿನ ಬೋರ್ಡ್‌ನಲ್ಲಿ Dice ಮತ್ತು ಸರಳ Token ಚಲನೆ ಇದೆ; ಸಂಪೂರ್ಣ ಅಧಿಕೃತ Ludo ನಿಯಮಗಳು ಇನ್ನೂ ಸೇರಿಸಬೇಕಾಗಿವೆ.</p>
+<h3>🎲 Ludo Board — Demo</h3>
+<div id="board" class="board"></div>
+<div class="controls">
+<button class="primary" id="roll">🎲 Roll Dice</button>
+<button id="move">Move Token</button>
+<button id="newGame">New Game</button>
+</div>
+<div class="status" id="gameStatus">ಇದು ಸ್ಥಳೀಯ demo board. ಆಟಗಾರರ ನಡುವೆ board sync ಇನ್ನೂ ಇಲ್ಲ.</div>
+<div id="members"></div>
 </section>
 
 <section class="panel">
- <h3 id="onlineTitle">🌐 Online ರೂಮ್</h3>
- <div class="controls">
-  <input id="roomId" placeholder="ರೂಮ್ ಕೋಡ್ (ಉದಾ. LUDO123)" maxlength="20">
-  <button id="createRoom">ರೂಮ್ ರಚಿಸಿ</button><button id="joinRoom">ರೂಮ್ ಸೇರಿ</button>
- </div>
- <div class="status" id="onlineStatus">Firebase ಸಂಪರ್ಕವನ್ನು ಹೊಂದಿಸಲು ಕೆಳಗಿನ ಸೂಚನೆ ನೋಡಿ.</div>
- <p class="note">ನಿಮ್ಮ Firebase Database ವಿಳಾಸವನ್ನು ಕೋಡ್‌ನಲ್ಲಿ ಸೇರಿಸಲಾಗಿದೆ. Online ಆಟ ಕಾರ್ಯನಿರ್ವಹಿಸಲು Firebase Authentication ಮತ್ತು ಸುರಕ್ಷಿತ Realtime Database Rules ಹೊಂದಿಸಬೇಕು. ಈ HTML ಮಾತ್ರದಿಂದ ಸುರಕ್ಷಿತ multiplayer ಪೂರ್ಣವಾಗುವುದಿಲ್ಲ.</p>
+<h3>💬 Room Chat</h3>
+<div id="chatLog" class="chatlog"></div>
+<div class="controls">
+<input id="chatText" placeholder="Message ಬರೆಯಿರಿ" maxlength="500">
+<button id="sendChat">Send</button>
+</div>
 </section>
 
 <section class="panel">
- <h3 id="extrasTitle">🎁 Gifts, Diamonds ಮತ್ತು Voice Chat</h3>
- <div class="controls">
-  <button id="gift">🎁 ಉಡುಗೊರೆ ಕಳುಹಿಸು (50 Coin)</button>
-  <button id="diamondBuy">💎 5 Diamonds (100 Coin)</button>
-  <button id="voice">🎙️ ಮೈಕ್ ಆನ್/ಆಫ್</button>
- </div>
- <div class="status" id="extrasStatus">Gifts ಮತ್ತು Diamonds ಈ ಸಾಧನದಲ್ಲಿ ಮಾದರಿ ರೂಪದಲ್ಲಿ ಕೆಲಸ ಮಾಡುತ್ತವೆ. ನಿಜವಾದ Voice Chat‌ಗೆ WebRTC ಮತ್ತು Firebase signaling ಸರ್ವರ್ ಸಂಪರ್ಕ ಬೇಕು.</div>
- <audio id="localAudio" autoplay muted playsinline style="width:100%;margin-top:8px"></audio>
+<h3>🎵 Shared Room Music</h3>
+<p><small>ನಿಮ್ಮ ಬಳಿ ಅನುಮತಿ ಇರುವ direct MP3/OGG URL ಬಳಸಿ.</small></p>
+<div class="controls">
+<input id="trackUrl" placeholder="Audio URL">
+<button id="setTrack">Set Track</button>
+<button id="playMusic">▶ Play</button>
+<button id="pauseMusic">⏸ Pause</button>
+</div>
+<audio id="roomAudio" controls></audio>
+<div class="status" id="musicStatus">Admin ಅನುಮತಿ ಮತ್ತು room ಅಗತ್ಯ.</div>
 </section>
+
 <section class="panel">
- <h3>⚙️ Firebase ವಿವರ</h3>
- <p class="note">Database URL: <code>https://ludomates-86605-default-rtdb.asia-southeast1.firebasedatabase.app/</code></p>
- <p class="note">Firebase web app config-ನಲ್ಲಿ apiKey, authDomain, projectId, appId ಸೇರಿಸಿ; ನಂತರ Authentication → Anonymous sign-in ಸಕ್ರಿಯಗೊಳಿಸಿ. Database Rules-ನ್ನು ಸಾರ್ವಜನಿಕವಾಗಿ ಓದಲು/ಬರೆಯಲು ತೆರೆಯಬೇಡಿ.</p>
+<h3>🛡️ Admin Tools</h3>
+<p><small>Kick/Ban ಸುರಕ್ಷಿತವಾಗಿ ಕೆಲಸ ಮಾಡಲು server-side admin verification ಅಗತ್ಯ.</small></p>
+<div class="controls">
+<input id="targetUid" placeholder="Player UID">
+<button id="kick">Kick 2 hours</button>
+<button id="ban">Permanent Ban</button>
+<button id="unban">Unban</button>
+</div>
+<div class="status" id="adminStatus">Admin ಮಾತ್ರ ಬಳಸಬೇಕು.</div>
 </section>
 </main>
 
@@ -79,92 +109,234 @@ main{max-width:850px;margin:auto;padding:14px;display:grid;gap:14px}.panel{backg
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <script>
-const DB_URL="https://ludomates-86605-default-rtdb.asia-southeast1.firebasedatabase.app/";
-const firebaseConfig={databaseURL:DB_URL};
-// Add your Firebase Console Web App values here before enabling real online features.
-const READY_CONFIG=false;
-let db=null,auth=null;
-try{
- if(READY_CONFIG && window.firebase){firebase.initializeApp(firebaseConfig);auth=firebase.auth();db=firebase.database();}
-}catch(e){console.warn(e)}
+const firebaseConfig = {
+ apiKey: "AIzaSyC9PSL5O51u24E0DWu_QuRsKLimjIPmqDU",
+ authDomain: "ludomates-86605.firebaseapp.com",
+ databaseURL: "https://ludomates-86605-default-rtdb.asia-southeast1.firebasedatabase.app",
+ projectId: "ludomates-86605",
+ storageBucket: "ludomates-86605.firebasestorage.app",
+ messagingSenderId: "1078214983485",
+ appId: "1:1078214983485:web:d47f39ffa65f619c550f54",
+ measurementId: "G-XTP0W24Y45"
+};
+
 const $=id=>document.getElementById(id);
-let coins=Number(localStorage.getItem("lm_coins")||500), diamonds=Number(localStorage.getItem("lm_diamonds")||10);
-let die=0,turn=0,steps=[-1,-1,-1,-1],players=2,micStream=null;
+let db=null,auth=null,user=null,roomRef=null,room="",isAdmin=false;
+let dice=0,turn=0,seatCount=2,positions=[-1,-1,-1,-1];
 const colors=["red","green","yellow","blue"];
 const route=[];
-for(let c=1;c<=6;c++)route.push([6,c]);
+for(let c=1;c<=5;c++)route.push([6,c]);
+route.push([6,6]);
 for(let r=5;r>=0;r--)route.push([r,7]);
-for(let r=1;r<=6;r++)route.push([r,8]);
+for(let r=1;r<=5;r++)route.push([r,8]);
 for(let c=9;c<=14;c++)route.push([7,c]);
-for(let c=13;c>=8;c--)route.push([8,c]);
+for(let c=13;c>=9;c--)route.push([8,c]);
 for(let r=9;r<=14;r++)route.push([r,7]);
 for(let r=13;r>=9;r--)route.push([r,6]);
 route.push([8,5],[8,4],[8,3],[8,2],[8,1],[8,0],[7,0],[6,0]);
-const homes={red:[0,0,6,6],green:[0,9,6,14],yellow:[9,9,14,14],blue:[9,0,14,6]};
-const translations={
- kn:{coin:"ನನ್ನ Coin",daily:"🎁 ದಿನದ ಉಚಿತ Coin",dailyNote:"ದಿನಕ್ಕೆ ಒಮ್ಮೆ 100 ಉಚಿತ Coin ಪಡೆಯಬಹುದು.",dice:"🎲 Dice ಎಸೆಯಿರಿ",move:"Token ಚಲಿಸು",reset:"ಹೊಸ ಆಟ",turn:"ಈಗ",roll:"Dice ಬಂತು",needSix:"Token ಹೊರತರಲು 6 ಬೇಕು.",moved:"Token ಚಲಿಸಿದೆ!",online:"🌐 Online ರೂಮ್",gift:"🎁 ಉಡುಗೊರೆ ಕಳುಹಿಸು (50 Coin)",diamond:"💎 5 Diamonds (100 Coin)"},
- en:{coin:"My Coins",daily:"🎁 Daily free Coins",dailyNote:"Collect 100 free Coins once per day.",dice:"🎲 Roll Dice",move:"Move Token",reset:"New Game",turn:"Turn",roll:"Dice rolled",needSix:"You need a 6 to bring a token out.",moved:"Token moved!",online:"🌐 Online Room",gift:"🎁 Send Gift (50 Coins)",diamond:"💎 5 Diamonds (100 Coins)"},
- hi:{coin:"मेरे कॉइन",daily:"🎁 रोज़ाना मुफ़्त कॉइन",dailyNote:"हर दिन 100 मुफ़्त कॉइन मिलते हैं।",dice:"🎲 पासा फेंकें",move:"टोकन चलाएँ",reset:"नया खेल",turn:"बारी",roll:"पासा आया",needSix:"टोकन निकालने के लिए 6 चाहिए।",moved:"टोकन चल गया!",online:"🌐 ऑनलाइन रूम",gift:"🎁 उपहार भेजें (50 कॉइन)",diamond:"💎 5 डायमंड (100 कॉइन)"},
- ml:{coin:"എന്റെ കോയിനുകൾ",daily:"🎁 ദിവസേന സൗജന്യ കോയിനുകൾ",dailyNote:"ദിവസവും 100 സൗജന്യ കോയിനുകൾ ലഭിക്കും.",dice:"🎲 ഡൈസ് എറിയുക",move:"ടോക്കൺ നീക്കുക",reset:"പുതിയ കളി",turn:"ഊഴം",roll:"ഡൈസ് എറിഞ്ഞു",needSix:"ടോക്കൺ പുറത്തെടുക്കാൻ 6 വേണം.",moved:"ടോക്കൺ നീങ്ങി!",online:"🌐 ഓൺലൈൻ റൂം",gift:"🎁 സമ്മാനം അയയ്ക്കുക (50 കോയിൻ)",diamond:"💎 5 ഡയമണ്ട് (100 കോയിൻ)"},
- ta:{coin:"என் காயின்கள்",daily:"🎁 தினசரி இலவச காயின்கள்",dailyNote:"தினமும் 100 இலவச காயின்கள் பெறலாம்.",dice:"🎲 பகடையை உருட்டு",move:"காயினை நகர்த்து",reset:"புதிய விளையாட்டு",turn:"முறை",roll:"பகடை விழுந்தது",needSix:"காயினை வெளியே கொண்டுவர 6 தேவை.",moved:"காயின் நகர்ந்தது!",online:"🌐 ஆன்லைன் அறை",gift:"🎁 பரிசு அனுப்பு (50 காயின்கள்)",diamond:"💎 5 வைரங்கள் (100 காயின்கள்)"}
-};
-function save(){localStorage.setItem("lm_coins",coins);localStorage.setItem("lm_diamonds",diamonds);$("coins").textContent=coins;$("diamonds").textContent=diamonds+" 💎"}
-function t(k){return (translations[$("language").value]||translations.kn)[k]||translations.kn[k]||k}
-function say(msg){$("status").textContent=msg}
-function drawBoard(){
- const board=$("board");board.innerHTML="";
+
+function status(id,text){$(id).textContent=text}
+
+async function connect(){
+ if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);
+ auth=firebase.auth();
+ db=firebase.database();
+ if(!auth.currentUser)await auth.signInAnonymously();
+ user=auth.currentUser;
+ const token=await user.getIdTokenResult(true);
+ isAdmin=token.claims.admin===true;
+ $("connection").textContent="Connected";
+}
+
+function buildBoard(){
+ const board=$("board");board.replaceChildren();
  for(let r=0;r<15;r++)for(let c=0;c<15;c++){
-  let el=document.createElement("div");el.className="cell";
-  if(r<6&&c<6)el.classList.add("home-red");
-  else if(r<6&&c>8)el.classList.add("home-green");
-  else if(r>8&&c>8)el.classList.add("home-yellow");
-  else if(r>8&&c<6)el.classList.add("home-blue");
-  else if(r>=6&&r<=8&&c>=6&&c<=8)el.classList.add("center");
-  else if((c===7&&r>=0&&r<=14)||(r===7&&c>=0&&c<=14))el.classList.add("path");
-  if((r===6&&c===1)||(r===1&&c===8)||(r===8&&c===13)||(r===13&&c===6))el.classList.add("safe");
-  if(r===7&&c===7)el.textContent="LM";
-  board.appendChild(el);
+  const cell=document.createElement("div");
+  cell.className="cell";
+  if(r<6&&c<6)cell.classList.add("home-red");
+  else if(r<6&&c>8)cell.classList.add("home-green");
+  else if(r>8&&c>8)cell.classList.add("home-yellow");
+  else if(r>8&&c<6)cell.classList.add("home-blue");
+  else if(r>=6&&r<=8&&c>=6&&c<=8)cell.classList.add("center");
+  if(r===7&&c===7)cell.textContent="LM";
+  board.append(cell);
  }
- const cells=[...board.children];
- Object.entries(homes).forEach(([color,box])=>{
-  const [r1,c1,r2,c2]=box;
-  [[r1+1,c1+1],[r1+1,c2-1],[r2-1,c1+1],[r2-1,c2-1]].forEach(([r,c],i)=>{
-   const cell=cells[r*15+c];cell.style.background=color==="red"?"#ef4444":color==="green"?"#22c55e":color==="yellow"?"#facc15":"#3b82f6";
-   cell.style.borderRadius="50%";cell.style.margin="10%";
-   if(i===0){const token=document.createElement("div");token.className="token t-"+color;token.textContent="●";cell.appendChild(token)}
-  });
- });
- route.forEach(([r,c])=>{const cell=cells[r*15+c];cell.style.background="#fff";cell.style.border="1px solid #cbd5e1"});
- renderTokens();
+ drawTokens();
 }
-function renderTokens(){
+function drawTokens(){
  const cells=[...$("board").children];
- document.querySelectorAll(".moving-token").forEach(n=>n.remove());
- steps.forEach((step,i)=>{
-  if(i>=players||step<0)return;
-  const [r,c]=route[step%route.length];const cell=cells[r*15+c];
-  const tok=document.createElement("div");tok.className="token moving-token t-"+colors[i];tok.textContent=String(i+1);cell.appendChild(tok);
+ document.querySelectorAll(".moving-token").forEach(t=>t.remove());
+ positions.forEach((p,i)=>{
+  if(p<0||i>=seatCount)return;
+  const [r,c]=route[p%route.length];
+  const token=document.createElement("div");
+  token.className="token moving-token t-"+colors[i];
+  token.textContent=i+1;
+  cells[r*15+c].append(token);
  });
- const list=$("playerlist");list.innerHTML="";
- for(let i=0;i<players;i++){const d=document.createElement("div");d.className="player";d.innerHTML='<span class="dot" style="background:'+["#ef4444","#22c55e","#facc15","#3b82f6"][i]+'"></span>ಆಟಗಾರ '+(i+1)+(i===turn?' • ನಿಮ್ಮ ಸರದಿ':'');list.appendChild(d)}
 }
-$("dice").onclick=()=>{die=Math.floor(Math.random()*6)+1;$("dice").textContent="🎲 "+die;say(t("roll")+": "+die+". "+(steps[turn]<0&&die!==6?t("needSix"):"ಈಗ Token ಚಲಿಸು."));};
-$("move").onclick=()=>{
- if(!die){say("ಮೊದಲು Dice ಎಸೆಯಿರಿ.");return}
- if(steps[turn]<0){if(die!==6){say(t("needSix"));die=0;turn=(turn+1)%players;renderTokens();return}steps[turn]=0}
- else steps[turn]=(steps[turn]+die)%route.length;
- coins+=2;save();say(t("moved")+" +2 Coin");const rolled=die;die=0;if(rolled!==6)turn=(turn+1)%players;renderTokens();
+
+async function roomAction(create){
+ const code=$("roomCode").value.trim().toUpperCase();
+ if(!/^[A-Z0-9_-]{3,20}$/.test(code)){
+  status("roomStatus","Room code 3–20 characters ಇರಬೇಕು.");return;
+ }
+ try{
+  await connect();
+  room=code;roomRef=db.ref("rooms/"+room);
+  const banSnap=await roomRef.child("bans/"+user.uid).get();
+  const ban=banSnap.val();
+  if(ban&&(ban.permanent||Number(ban.until||0)>Date.now()))
+   throw Error("ಈ room‌ಗೆ ನಿಮ್ಮ ಪ್ರವೇಶ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ.");
+  const infoRef=roomRef.child("info");
+  const info=await infoRef.get();
+  if(create){
+   if(info.exists())throw Error("Room ಈಗಾಗಲೇ ಇದೆ. ಬೇರೆ code ಬಳಸಿ.");
+   await infoRef.set({createdBy:user.uid,createdAt:Date.now(),seatCount:Number($("seatCount").value)});
+  }else if(!info.exists())throw Error("Room ಸಿಗಲಿಲ್ಲ. ಮೊದಲು Create ಮಾಡಿ.");
+  seatCount=Number((await infoRef.child("seatCount").get()).val()||2);
+  const player=roomRef.child("players/"+user.uid);
+  await player.set({uid:user.uid,name:($("nickname").value.trim()||"Player").slice(0,24)});
+  player.onDisconnect().remove();
+  status("roomStatus","Room: "+room+" · UID: "+user.uid);
+  status("adminStatus",isAdmin?"Admin verified":"Admin privileges ಇಲ್ಲ");
+  listenRoom();
+ }catch(e){status("roomStatus",e.message);status("connection","Not connected")}
+}
+
+let listeners=[];
+function listenRoom(){
+ listeners.forEach(x=>x.off());listeners=[];
+ const chat=roomRef.child("chat").limitToLast(80);
+ const chatCb=s=>{
+  const log=$("chatLog");log.replaceChildren();
+  s.forEach(c=>{
+   const m=c.val()||{},el=document.createElement("div");
+   el.className="chatmsg";
+   const name=document.createElement("b");
+   name.textContent=(m.name||"Player")+": ";
+   const body=document.createElement("span");
+   body.textContent=m.text||"";
+   el.append(name,body);log.append(el);
+  });
+  log.scrollTop=log.scrollHeight;
+ };
+ chat.on("value",chatCb);listeners.push({off:()=>chat.off("value",chatCb)});
+ const players=roomRef.child("players");
+ const playerCb=s=>{
+  const box=$("members");box.replaceChildren();
+  s.forEach(c=>{
+   const p=c.val()||{},el=document.createElement("div");
+   el.className="member";
+   el.textContent=(p.name||"Player")+" · "+c.key.slice(0,8);
+   box.append(el);
+  });
+ };
+ players.on("value",playerCb);listeners.push({off:()=>players.off("value",playerCb)});
+ const music=roomRef.child("music");
+ const musicCb=s=>syncMusic(s.val());
+ music.on("value",musicCb);listeners.push({off:()=>music.off("value",musicCb)});
+}
+
+async function sendChat(){
+ if(!roomRef||!user)throw Error("ಮೊದಲು Room Join ಮಾಡಿ.");
+ const text=$("chatText").value.trim();
+ if(!text)return;
+ const banSnap=await roomRef.child("bans/"+user.uid).get();
+ const ban=banSnap.val();
+ if(ban&&(ban.permanent||Number(ban.until||0)>Date.now()))throw Error("Chat ಮಾಡಲು ಅನುಮತಿ ಇಲ್ಲ.");
+ await roomRef.child("chat").push({
+  uid:user.uid,name:($("nickname").value.trim()||"Player").slice(0,24),
+  text:text.slice(0,500),time:firebase.database.ServerValue.TIMESTAMP
+ });
+ $("chatText").value="";
+}
+
+async function setMusic(playing){
+ if(!roomRef||!user)throw Error("ಮೊದಲು Room Join ಮಾಡಿ.");
+ const token=await user.getIdTokenResult(true);
+ if(token.claims.admin!==true)throw Error("Admin ಮಾತ್ರ music ನಿಯಂತ್ರಿಸಬಹುದು.");
+ const audio=$("roomAudio");
+ const url=$("trackUrl").value.trim()||audio.src;
+ if(!url)throw Error("ಮೊದಲು audio URL ಹಾಕಿ.");
+ await roomRef.child("music").set({
+  url,playing,position:audio.currentTime||0,updatedAt:Date.now(),by:user.uid
+ });
+}
+async function syncMusic(m){
+ if(!m||!m.url)return;
+ const a=$("roomAudio");
+ if(a.src!==m.url)a.src=m.url;
+ try{
+  const pos=Number(m.position||0)+(m.playing?(Date.now()-Number(m.updatedAt||Date.now()))/1000:0);
+  if(Math.abs((a.currentTime||0)-pos)>2)a.currentTime=pos;
+  if(m.playing)await a.play();else a.pause();
+  status("musicStatus",m.playing?"Music playing":"Music paused");
+ }catch(e){status("musicStatus","Autoplay ತಡೆಯಲಾಗಿದೆ. Audio player ಮೇಲೆ Play ಒತ್ತಿ.");}
+}
+
+async function moderate(kind){
+ if(!roomRef||!user)throw Error("ಮೊದಲು Room Join ಮಾಡಿ.");
+ const token=await user.getIdTokenResult(true);
+ if(token.claims.admin!==true)throw Error("Admin custom claim ಅಗತ್ಯ.");
+ const uid=$("targetUid").value.trim();
+ if(!uid||uid===user.uid)throw Error("ಬೇರೆ player UID ಹಾಕಿ.");
+ const ref=roomRef.child("bans/"+uid);
+ if(kind==="unban")await ref.remove();
+ else{
+  await ref.set({
+   permanent:kind==="ban",
+   until:kind==="kick"?Date.now()+7200000:0,
+   by:user.uid,createdAt:Date.now()
+  });
+  await roomRef.child("players/"+uid).remove();
+ }
+ status("adminStatus",kind==="kick"?"2-hour kick saved":kind==="ban"?"Permanent ban saved":"Ban removed");
+}
+
+$("createRoom").onclick=()=>roomAction(true);
+$("joinRoom").onclick=()=>roomAction(false);
+$("leaveRoom").onclick=async()=>{
+ try{
+  if(roomRef&&user)await roomRef.child("players/"+user.uid).remove();
+  listeners.forEach(x=>x.off());listeners=[];
+  roomRef=null;room="";
+  status("roomStatus","Room ಬಿಟ್ಟಿದ್ದೀರಿ.");
+  status("connection","Not connected");
+ }catch(e){status("roomStatus",e.message)}
 };
-$("reset").onclick=()=>{steps=[-1,-1,-1,-1];turn=0;die=0;$("dice").textContent=t("dice");drawBoard();say("ಹೊಸ ಆಟ ಆರಂಭವಾಯಿತು.");};
-$("players").onchange=e=>{players=Number(e.target.value);turn=turn%players;drawBoard()};
-$("language").onchange=()=>{const lang=$("language").value;document.documentElement.lang=lang;$("coinLabel").textContent=t("coin");$("daily").textContent=t("daily");$("dailyNote").textContent=t("dailyNote");$("dice").textContent=t("dice");$("move").textContent=t("move");$("reset").textContent=t("reset");$("onlineTitle").textContent=t("online");$("gift").textContent=t("gift");$("diamondBuy").textContent=t("diamond");drawBoard()};
-$("daily").onclick=()=>{const today=new Date().toISOString().slice(0,10);if(localStorage.getItem("lm_daily")===today){say("ಇಂದಿನ ಉಚಿತ Coin ಈಗಾಗಲೇ ಪಡೆದಿದ್ದೀರಿ.");return}coins+=100;localStorage.setItem("lm_daily",today);save();say("🎁 100 ಉಚಿತ Coin ಸಿಕ್ಕಿವೆ!");};
-$("gift").onclick=()=>{if(coins<50){$("extrasStatus").textContent="Coin ಸಾಕಾಗುವುದಿಲ್ಲ.";return}coins-=50;save();$("extrasStatus").textContent="🎁 ಮಾದರಿ ಉಡುಗೊರೆ ಕಳುಹಿಸಲಾಗಿದೆ. ನಿಜವಾದ online gift‌ಗೆ Firebase room ವ್ಯವಸ್ಥೆ ಬೇಕು."};
-$("diamondBuy").onclick=()=>{if(coins<100){$("extrasStatus").textContent="Coin ಸಾಕಾಗುವುದಿಲ್ಲ.";return}coins-=100;diamonds+=5;save();$("extrasStatus").textContent="💎 5 Diamonds ಸೇರಿಸಲಾಗಿದೆ (ಈ ಸಾಧನದ ಮಾದರಿ)."};
-$("createRoom").onclick=async()=>{const room=$("roomId").value.trim().toUpperCase();if(!room){$("onlineStatus").textContent="ಮೊದಲು ರೂಮ್ ಕೋಡ್ ಬರೆಯಿರಿ.";return}if(!db){$("onlineStatus").textContent="Firebase Web App config ಇನ್ನೂ ಸೇರಿಸಿಲ್ಲ. Console‌ನಿಂದ apiKey, authDomain, projectId, appId ಸೇರಿಸಿ; READY_CONFIG=true ಮಾಡಿ.";return}try{await auth.signInAnonymously();await db.ref("rooms/"+room+"/info").set({createdAt:Date.now(),status:"waiting"});$("onlineStatus").textContent="ರೂಮ್ "+room+" ರಚಿಸಲಾಗಿದೆ."}catch(e){$("onlineStatus").textContent="Firebase ದೋಷ: "+e.message}};
-$("joinRoom").onclick=async()=>{const room=$("roomId").value.trim().toUpperCase();if(!room){$("onlineStatus").textContent="ಮೊದಲು ರೂಮ್ ಕೋಡ್ ಬರೆಯಿರಿ.";return}if(!db){$("onlineStatus").textContent="Firebase Web App config ಸೇರಿಸಿದ ನಂತರ ರೂಮ್ ಸೇರಬಹುದು.";return}try{await auth.signInAnonymously();await db.ref("rooms/"+room+"/players/"+auth.currentUser.uid).set({joinedAt:Date.now()});$("onlineStatus").textContent="ರೂಮ್ "+room+" ಸೇರಲು ವಿನಂತಿ ಕಳುಹಿಸಲಾಗಿದೆ."}catch(e){$("onlineStatus").textContent="Firebase ದೋಷ: "+e.message}};
-$("voice").onclick=async()=>{try{if(micStream){micStream.getTracks().forEach(t=>t.stop());micStream=null;$("localAudio").srcObject=null;$("extrasStatus").textContent="ಮೈಕ್ ಆಫ್ ಮಾಡಲಾಗಿದೆ. ಇದು ಸ್ಥಳೀಯ ಮೈಕ್ ಪರೀಕ್ಷೆ ಮಾತ್ರ; ಇತರ ಆಟಗಾರರಿಗೆ ಧ್ವನಿ ಹೋಗುವುದಿಲ್ಲ.";return}micStream=await navigator.mediaDevices.getUserMedia({audio:true});$("localAudio").srcObject=micStream;$("localAudio").muted=true;$("extrasStatus").textContent="ಮೈಕ್ ಅನುಮತಿ ದೊರೆಯಿತು. ನಿಜವಾದ Voice Chat‌ಗೆ WebRTC peer connection ಮತ್ತು Firebase signaling ಸೇರಿಸಬೇಕು."}catch(e){$("extrasStatus").textContent="ಮೈಕ್ ತೆರೆಯಲಾಗಲಿಲ್ಲ: "+e.message+" — ಬ್ರೌಸರ್ ಅನುಮತಿ ಪರಿಶೀಲಿಸಿ."}};
-save();drawBoard();
+$("sendChat").onclick=()=>sendChat().catch(e=>status("roomStatus",e.message));
+$("chatText").addEventListener("keydown",e=>{
+ if(e.key==="Enter")sendChat().catch(x=>status("roomStatus",x.message));
+});
+$("setTrack").onclick=()=>setMusic(false).catch(e=>status("musicStatus",e.message));
+$("playMusic").onclick=()=>setMusic(true).catch(e=>status("musicStatus",e.message));
+$("pauseMusic").onclick=()=>setMusic(false).catch(e=>status("musicStatus",e.message));
+$("kick").onclick=()=>moderate("kick").catch(e=>status("adminStatus",e.message));
+$("ban").onclick=()=>moderate("ban").catch(e=>status("adminStatus",e.message));
+$("unban").onclick=()=>moderate("unban").catch(e=>status("adminStatus",e.message));
+
+$("roll").onclick=()=>{
+ dice=Math.floor(Math.random()*6)+1;
+ status("gameStatus","Dice: "+dice+" — Move Token ಒತ್ತಿ.");
+};
+$("move").onclick=()=>{
+ if(!dice){status("gameStatus","ಮೊದಲು dice ಎಸೆಯಿರಿ.");return;}
+ if(positions[turn]<0){
+  if(dice!==6){status("gameStatus","Token ಹೊರತರಲು 6 ಬೇಕು.");dice=0;turn=(turn+1)%seatCount;return;}
+  positions[turn]=0;
+ }else positions[turn]=(positions[turn]+dice)%route.length;
+ const n=dice;dice=0;
+ if(n!==6)turn=(turn+1)%seatCount;
+ drawTokens();
+ status("gameStatus","Local demo ಮಾತ್ರ; board ಇತರ ಆಟಗಾರರೊಂದಿಗೆ sync ಆಗುವುದಿಲ್ಲ.");
+};
+$("newGame").onclick=()=>{
+ positions=[-1,-1,-1,-1];turn=0;dice=0;drawTokens();
+ status("gameStatus","ಹೊಸ local demo game ಆರಂಭವಾಯಿತು.");
+};
+buildBoard();
 </script>
 </body>
-</html>
+ </html>
+ 
